@@ -111,9 +111,7 @@ databaseChangeLog:
               - column:
                   name: edited
                   type: timestamp
-                  defaultValue: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
+                  defaultValue: null
               - column:
                   name: id_chat
                   type: bigint

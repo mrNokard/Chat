@@ -1,7 +1,6 @@
 package com.nokard.chat.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -11,9 +10,13 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "chats")
-public class Chat extends BaseEntity {
+public class Chat {
+    @NonNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NonNull
     @Column(
             name = "name",
@@ -21,6 +24,7 @@ public class Chat extends BaseEntity {
             nullable = false
     )
     private String name;
+
     @Column( name = "description" )
     private String description;
 
@@ -29,4 +33,7 @@ public class Chat extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
     private Set<ChatMember> memberProfiles;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "chats")
+    private Set<User> users;
 }

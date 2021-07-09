@@ -1,17 +1,21 @@
 package com.nokard.chat.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "attachments")
-public class Attachment extends  BaseEntity{
+public class Attachment {
+    @NonNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(
             name = "filename",
             nullable = false

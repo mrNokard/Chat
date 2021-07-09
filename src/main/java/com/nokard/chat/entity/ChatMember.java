@@ -2,7 +2,6 @@ package com.nokard.chat.entity;
 
 import com.nokard.chat.enums.Roles;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;

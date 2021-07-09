@@ -1,9 +1,8 @@
 package com.nokard.chat.entity;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,9 +11,13 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "messages")
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class Message extends BaseEntity {
+public class Message {
+    @NonNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(
             name="content",
             nullable = false
@@ -32,11 +35,11 @@ public class Message extends BaseEntity {
     private Timestamp edited;
 
     @JoinColumn(name = "id_chat", insertable = false, updatable = false)
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Chat.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Chat chat;
 
     @JoinColumn(name = "id_author", insertable = false, updatable = false)
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User author;
 
     @JoinColumns({
