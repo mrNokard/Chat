@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: usr
+    password: usr
+    url: jdbc:h2:file:./db/out
+  liquibase:
+    change-log: classpath:db/changelog/changelog.yaml
+    enabled: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate

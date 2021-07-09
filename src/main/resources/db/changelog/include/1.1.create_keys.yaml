@@ -1,0 +1,54 @@
+databaseChangeLog:
+  #Chat members table------------------------
+  - changeSet:
+      id: 5
+      author: nokard
+      tagDatabase: v1.1.0
+      changes:
+          - addForeignKeyConstraint:
+              constraintName: fk_chat_members_user
+              baseTableName: chat_members
+              baseColumnNames: id_user
+              referencedTableName: users
+              referencedColumnNames: id
+              onDelete: cascade
+          - addForeignKeyConstraint:
+              constraintName: fk_chat_members_chat
+              baseTableName: chat_members
+              baseColumnNames: id_chat
+              referencedTableName: chats
+              referencedColumnNames: id
+              onDelete: cascade
+  #Messages table------------------------
+  - changeSet:
+      id: 6
+      author: nokard
+      tagDatabase: v1.1.1
+      changes:
+          - addForeignKeyConstraint:
+              constraintName: fk_messages_author
+              baseTableName: messages
+              baseColumnNames: id_author
+              referencedTableName: chat_members
+              referencedColumnNames: id
+              onDelete: set null
+          - addForeignKeyConstraint:
+              constraintName: fk_messages_chat
+              baseTableName: messages
+              baseColumnNames: id_chat
+              referencedTableName: chats
+              referencedColumnNames: id
+              onDelete: cascade
+  #Attachments table------------------------
+  - changeSet:
+        id: 7
+        author: nokard
+        tagDatabase: v1.1.2
+        changes:
+            - addForeignKeyConstraint:
+                constraintName: fk_attachments_message
+                baseTableName: attachments
+                baseColumnNames: id_message
+                referencedTableName: chat_members
+                referencedColumnNames: id
+                onDelete: set null

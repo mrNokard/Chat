@@ -1,0 +1,152 @@
+databaseChangeLog:
+  #Users table ---------------------
+  - changeSet:
+      id: 0
+      author: nokard
+      tagDatabase: v1.0.0
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+            - column:
+                name: id
+                type: bigint
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: login
+                type: varchar(100)
+                constraints:
+                  nullable: false
+            - column:
+                name: bio
+                type: varchar(1024)
+  #Chats table ---------------------
+  - changeSet:
+      id: 1
+      author: nokard
+      tagDatabase: v1.0.1
+      changes:
+        - createTable:
+            tableName: chats
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(1024)
+  #Chat members table ---------------------
+  - changeSet:
+      id: 2
+      author: nokard
+      tagDatabase: v1.0.2
+      changes:
+        - createTable:
+            tableName: chat_members
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: notify
+                  type: bool
+                  defaultValue: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar
+                  defaultValue: "USER"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: id_chat
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: id_user
+                  type: bigint
+                  constraints:
+                    nullable: false
+  #Messages table ---------------------
+  - changeSet:
+      id: 3
+      author: nokard
+      tagDatabase: v1.0.3
+      changes:
+        - createTable:
+            tableName: messages
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: content
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sent
+                  type: timestamp
+                  defaultValue: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: edited
+                  type: timestamp
+                  defaultValue: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: id_chat
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: id_author
+                  type: bigint
+  #Attachments table ---------------------
+  - changeSet:
+      id: 4
+      author: nokard
+      tagDatabase: v1.0.4
+      changes:
+        - createTable:
+            tableName: attachments
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: filename
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: id_message
+                  type: bigint
