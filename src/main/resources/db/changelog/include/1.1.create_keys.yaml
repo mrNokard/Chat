@@ -1,4 +1,5 @@
 databaseChangeLog:
+
   #Chat members table------------------------
   - changeSet:
       id: 5
@@ -28,15 +29,22 @@ databaseChangeLog:
           - addForeignKeyConstraint:
               constraintName: fk_messages_author
               baseTableName: messages
-              baseColumnNames: id_author
+              baseColumnNames: id_chat, id_author
               referencedTableName: chat_members
-              referencedColumnNames: id
+              referencedColumnNames: id_chat, id_user
               onDelete: set null
           - addForeignKeyConstraint:
               constraintName: fk_messages_chat
               baseTableName: messages
               baseColumnNames: id_chat
               referencedTableName: chats
+              referencedColumnNames: id
+              onDelete: cascade
+          - addForeignKeyConstraint:
+              constraintName: fk_messages_user
+              baseTableName: messages
+              baseColumnNames: id_author
+              referencedTableName: users
               referencedColumnNames: id
               onDelete: cascade
   #Attachments table------------------------
@@ -49,6 +57,6 @@ databaseChangeLog:
                 constraintName: fk_attachments_message
                 baseTableName: attachments
                 baseColumnNames: id_message
-                referencedTableName: chat_members
+                referencedTableName: messages
                 referencedColumnNames: id
                 onDelete: set null

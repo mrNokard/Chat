@@ -19,6 +19,7 @@ databaseChangeLog:
                 name: login
                 type: varchar(100)
                 constraints:
+                  unique: true
                   nullable: false
             - column:
                 name: bio
@@ -57,13 +58,6 @@ databaseChangeLog:
             tableName: chat_members
             columns:
               - column:
-                  name: id
-                  type: bigint
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
                   name: notify
                   type: bool
                   defaultValue: true
@@ -79,11 +73,13 @@ databaseChangeLog:
                   name: id_chat
                   type: bigint
                   constraints:
+                    primaryKey: true
                     nullable: false
               - column:
                   name: id_user
                   type: bigint
                   constraints:
+                    primaryKey: true
                     nullable: false
   #Messages table ---------------------
   - changeSet:

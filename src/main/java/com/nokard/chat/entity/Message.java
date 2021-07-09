@@ -31,13 +31,20 @@ public class Message extends BaseEntity {
     )
     private Timestamp edited;
 
-    @JoinColumn(name = "id_chat")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_chat", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Chat.class)
     private Chat chat;
 
-    @JoinColumn(name = "id_author")
+    @JoinColumn(name = "id_author", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    private User author;
+
+    @JoinColumns({
+            @JoinColumn(name = "id_chat"),
+            @JoinColumn(name = "id_author")
+    })
     @ManyToOne(fetch = FetchType.LAZY)
-    private ChatMember author;
+    private ChatMember authorMember;
 
     @OneToMany(
             fetch = FetchType.LAZY,

@@ -1,0 +1,151 @@
+databaseChangeLog:
+  #Users -------------------------
+  - changeSet:
+      id: data8
+      author: nokard
+      tagDatabase: v1.1-data:0
+      changes:
+        -  insert:
+            tableName: users
+            columns:
+              - column: {name: login, value: "admin"}
+              - column: {name: bio, value: null}
+        -  insert:
+             tableName: users
+             columns:
+               - column: {name: login, value: "mandaPUHKA"}
+               - column: {name: bio, value: "sus"}
+        -  insert:
+             tableName: users
+             columns:
+               - column: {name: login, value: "Gektor"}
+               - column: {name: bio, value: "Адмирал свободных кораблей"}
+        -  insert:
+             tableName: users
+             columns:
+               - column: {name: login, value: "Anonimus"}
+               - column: {name: bio, value: null}
+        -  insert:
+             tableName: users
+             columns:
+               - column: {name: login, value: "Null_patient"}
+               - column: {name: bio, value: null}
+  #Users -------------------------
+  - changeSet:
+      id: data9
+      author: nokard
+      tagDatabase: v1.1-data:1
+      changes:
+        -  insert:
+             tableName: chats
+             columns:
+               - column: {name: name, value: "Test chat"}
+               - column: {name: description, value: null}
+        -  insert:
+             tableName: chats
+             columns:
+               - column: {name: name, value: "Рыбалка и вино"}
+               - column: {name: description, value: "Разговоры о таком вот нестандартном сочетании."}
+
+  #Chat members -------------------------
+  - changeSet:
+      id: data10
+      author: nokard
+      tagDatabase: v1.1-data:2
+      changes:
+        -  insert:
+             tableName: chat_members
+             columns:
+               - column: {name: notify, value: true}
+               - column: {name: role, value: "OWNER"}
+               - column: {name: id_chat, value: 1}
+               - column: {name: id_user, value: 1}
+        -  insert:
+             tableName: chat_members
+             columns:
+               - column: {name: notify, value: true}
+               - column: {name: role, value: "USER"}
+               - column: {name: id_chat, value: 1}
+               - column: {name: id_user, value: 2}
+        -  insert:
+             tableName: chat_members
+             columns:
+               - column: {name: notify, value: true}
+               - column: {name: role, value: "OWNER"}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_user, value: 3}
+        -  insert:
+             tableName: chat_members
+             columns:
+               - column: {name: notify, value: true}
+               - column: {name: role, value: "USER"}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_user, value: 2}
+        -  insert:
+             tableName: chat_members
+             columns:
+               - column: {name: notify, value: true}
+               - column: {name: role, value: "USER"}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_user, value: 4}
+        -  insert:
+             tableName: chat_members
+             columns:
+               - column: {name: notify, value: true}
+               - column: {name: role, value: "ADMIN"}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_user, value: 1}
+  #Chat members -------------------------
+  - changeSet:
+      id: data11
+      author: nokard
+      tagDatabase: v1.1-data:3
+      changes:
+        -  insert:
+             tableName: messages
+             columns:
+               - column: {name: content, value: "Всем привет, малявки!"}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_author, value: 1}
+        -  insert:
+             tableName: messages
+             columns:
+               - column: {name: content, value: "И тебе не хворать, Меченый."}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_author, value: 3}
+        -  insert:
+             tableName: messages
+             columns:
+               - column: {name: content, value: "Gjvjubnt? gj;fkeqcnfffffff!\"\"\""}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_author, value: 2}
+        -  insert:
+             tableName: messages
+             columns:
+               - column: {name: content, value: "Ой..."}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_author, value: 2}
+        -  insert:
+             tableName: messages
+             columns:
+               - column: {name: content, value: "Продаю кокс."}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_author, value: 3}
+        -  insert:
+             tableName: messages
+             columns:
+               - column: {name: content, value: "Эй! Я звоню в полицию!"}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_author, value: 2}
+        -  insert:
+             tableName: messages
+             columns:
+               - column: {name: content, value: "*кокос"}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_author, value: 3}
+        -  insert:
+             tableName: messages
+             columns:
+               - column: {name: content, value: "ФБР: Ага-ага))"}
+               - column: {name: id_chat, value: 2}
+               - column: {name: id_author, value: 1}

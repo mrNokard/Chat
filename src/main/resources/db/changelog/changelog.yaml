@@ -2,3 +2,7 @@ databaseChangeLog:
   - includeAll:
       path: ./include/
       relativeToChangelogFile: true
+  #TODO: remove default data
+  - include:
+      file: ./data.yaml
+      relativeToChangelogFile: true
