@@ -2,13 +2,16 @@ package com.nokard.chat.entity;
 
 import com.nokard.chat.enums.Roles;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "chat_members")
@@ -38,7 +41,8 @@ public class ChatMember {
 
 }
 
-@Data
+@Getter
+@Setter
 @Embeddable
 @NoArgsConstructor
 class ChatMemberKey implements Serializable {

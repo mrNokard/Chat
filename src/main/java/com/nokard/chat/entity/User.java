@@ -1,14 +1,13 @@
 package com.nokard.chat.entity;
 
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "users")
@@ -37,11 +36,6 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     private Set<Message> messages;
 
-    @JoinTable(
-            name = "chat_members",
-            joinColumns = { @JoinColumn(name = "id_user")},
-            inverseJoinColumns = { @JoinColumn(name = "id_chat") }
-    )
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
     private Set<Chat> chats;
 }
