@@ -31,21 +31,10 @@ public class UserService {
 
 
     public UserResponse getUser(Long id) {
-        if(id == null) throw new NullPointerException("Parameter 'id' cannot be null");
+        if(id == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
 
         return new UserResponse(usersRepo.findById(id).orElseThrow(Exceptions.USER_NOT_FOUND));
     }
-
-    public Set<ChatResponse> getUserChats(Long id){
-        if(id == null) throw new NullPointerException("Parameter 'id' cannot be null");
-
-        return usersRepo.findById(id).orElseThrow(Exceptions.USER_NOT_FOUND)
-                .getChats()
-                .stream()
-                .map(ChatResponse::new)
-                .collect(Collectors.toSet());
-    }
-
     public UserResponse create(CreateUserRequest request) {
         if(usersRepo.findByLogin(request.getLogin()).isPresent()) throw Exceptions.USER_ALREADY_EXISTS.get();
 
@@ -56,17 +45,18 @@ public class UserService {
     }
 
     public DeleteUserResponse deleteById(Long id) {
+        if(id == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
         if(!usersRepo.existsById(id)) throw Exceptions.USER_NOT_FOUND.get();
         usersRepo.deleteById(id);
         return new DeleteUserResponse();
     }
 
     public UserResponse updateUser(UpdateUserRequest request) {
-        if (request.getId() == null) throw new NullPointerException("Field id cannot be null");
-        //<1922>
+        if(request.getId() == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
+        //<1917>
         if (request.getLogin() != null && usersRepo.existsByLoginAndIdNot(request.getLogin(), request.getId()))
             throw Exceptions.USER_ALREADY_EXISTS.get();
-        //</1922>
+        //</1917>
         User user = usersRepo.findById(request.getId()).orElseThrow(Exceptions.USER_NOT_FOUND);
 
         if(request.getLogin() != null) user.setLogin(request.getLogin());

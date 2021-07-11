@@ -27,7 +27,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(Throwable.class)
     @ResponseBody
     public ResponseEntity<ExceptionResponse> handle(Throwable ex) {
-        //Back in 1922
+        //Back in 1917
         String path = "";
         String method = "";
 

@@ -5,6 +5,7 @@ import com.nokard.chat.dto.user.CreateUserRequest;
 import com.nokard.chat.dto.user.DeleteUserResponse;
 import com.nokard.chat.dto.user.UpdateUserRequest;
 import com.nokard.chat.dto.user.UserResponse;
+import com.nokard.chat.service.ChatService;
 import com.nokard.chat.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import java.util.Set;
 @RequestMapping("/api/users")
 public class UsersController {
     private final UserService userService;
+    private final ChatService chatService;
 
     @GetMapping
     public Page<UserResponse> getPagedList(
@@ -41,7 +43,7 @@ public class UsersController {
 
     @GetMapping("id{id:\\d+}/chats" )
     public Set<ChatResponse> getChats(@PathVariable Long id){
-        return userService.getUserChats(id);
+        return chatService.getUserChats(id);
     }
 
     @PostMapping

@@ -21,7 +21,6 @@ public class ChatMember {
     @Column(  name = "role" )
     private Roles role;
 
-    @NonNull
     @Column (name = "notify")
     private boolean notify;
 

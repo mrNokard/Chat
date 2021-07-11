@@ -13,5 +13,4 @@ import java.util.Optional;
 public interface ChatsRepo extends JpaRepository<Chat, Long> {
     Page<Chat> findByNameContainingIgnoreCaseOrderByNameAsc(String like, Pageable p);
     Optional<Chat> findById(Long Id);
-    Optional<Chat> findByName(String login);
 }
