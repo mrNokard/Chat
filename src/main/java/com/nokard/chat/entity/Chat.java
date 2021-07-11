@@ -1,9 +1,6 @@
 package com.nokard.chat.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -11,10 +8,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
 @Table(name = "chats")
+@NoArgsConstructor
 public class Chat {
-    @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,13 +1,20 @@
 package com.nokard.chat.dto.exception;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.nokard.chat.utils.DateUtils;
+import lombok.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class ExceptionResponse {
     private boolean error = true;
+    private String message;
+    private String type;
+    private long timestamp = DateUtils.nowUnix();
+
+    public ExceptionResponse(Throwable t){
+        message = t.getLocalizedMessage();
+        type = t.getClass().getSimpleName();
+    }
 }

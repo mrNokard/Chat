@@ -12,7 +12,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
-    @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

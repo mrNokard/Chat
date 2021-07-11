@@ -1,5 +1,6 @@
 package com.nokard.chat.entity;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,11 +13,11 @@ import java.util.Set;
 @Table(name = "messages")
 @NoArgsConstructor
 public class Message {
-    @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     @Column(
             name="content",
             nullable = false
@@ -41,6 +42,7 @@ public class Message {
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;
 
+    @NonNull
     @JoinColumns({
             @JoinColumn(name = "id_chat"),
             @JoinColumn(name = "id_author")

@@ -11,3 +11,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
+#Back in 1922
+logging:
+  level:
+    org.springframework.web.servlet.PageNotFound: error
+    org.springframework.web.socket.config.WebSocketMessageBrokerStats: warn
+    liquibase.executor.jvm.JdbcExecutor: warn
+    springfox: warn
+    root: info

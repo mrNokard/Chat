@@ -1,0 +1,30 @@
+#Back in 1922
+Configuration:
+  Properties:
+    Property:
+      - name: LOG_CONSOLE_PATTERN
+        value: "%blue{%d{yyyy-MM-dd HH:mm:ss.SSS}} %highlight{%5p} [%15.15t] %cyan{%-40.40c{1.}}: %highlight{%m%n%ex}{FATAL=red, ERROR=red WARN=yellow, INFO=Normal, DEBUG=Normal, TRACE=Normal}"
+      - name: LOG_FILE_PATTERN
+        value: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+      - name: log-path
+        value: "logs"
+  Appenders:
+    Console:
+      - name: ConsoleAppender
+        target: SYSTEM_OUT
+        follow: true
+        PatternLayout:
+          pattern: ${LOG_CONSOLE_PATTERN}
+          disableAnsi: false
+          noConsoleNoAnsi: false
+    File:
+      - name: FileAppender
+        fileName: ${log-path}/systemlog.log
+        PatternLayout:
+          pattern: ${LOG_FILE_PATTERN}
+  Loggers:
+    Root:
+      level: info
+      additivity: false
+      AppenderRef:
+        - ref: ConsoleAppender
