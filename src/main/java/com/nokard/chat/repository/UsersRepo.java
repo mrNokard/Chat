@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface UsersRepo extends JpaRepository<User, Long> {
-    Page<User> findByLoginIsLike(String like, Pageable p);
+    Page<User> findByLoginContainingIgnoreCaseOrderByLoginAsc(String like, Pageable p);
     Optional<User> findById(Long Id);
     Optional<User> findByLogin(String login);
     boolean existsByLoginAndIdNot(String login, Long id);

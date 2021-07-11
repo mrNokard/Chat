@@ -24,13 +24,13 @@ public class UsersController {
     public Page<UserResponse> getPagedList(
             @RequestParam(required = false) Integer size,
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) String q
+            @RequestParam(required = false, name = "q") String loginLike
     ){
         if(size == null) size = 10;
         if(page == null) page = 0;
-        return (q == null)?
+        return (loginLike == null)?
                 userService.getUsers(PageRequest.of(page, size)):
-                userService.getUsers(PageRequest.of(page, size), q);
+                userService.getUsers(PageRequest.of(page, size), loginLike);
 
     }
 

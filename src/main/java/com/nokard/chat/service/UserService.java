@@ -6,7 +6,6 @@ import com.nokard.chat.dto.user.DeleteUserResponse;
 import com.nokard.chat.dto.user.UpdateUserRequest;
 import com.nokard.chat.dto.user.UserResponse;
 import com.nokard.chat.entity.User;
-import com.nokard.chat.exception.BadRequestException;
 import com.nokard.chat.repository.UsersRepo;
 import com.nokard.chat.utils.Exceptions;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +25,8 @@ public class UserService {
     public Page<UserResponse> getUsers(Pageable p){
         return usersRepo.findAll(p).map(UserResponse::new);
     }
-
     public Page<UserResponse> getUsers(PageRequest of, String q) {
-        return usersRepo.findByLoginIsLike(q, of).map(UserResponse::new);
+        return usersRepo.findByLoginContainingIgnoreCaseOrderByLoginAsc(q, of).map(UserResponse::new);
     }
 
 
