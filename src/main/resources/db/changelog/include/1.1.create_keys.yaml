@@ -46,7 +46,7 @@ databaseChangeLog:
               baseColumnNames: id_author
               referencedTableName: users
               referencedColumnNames: id
-              onDelete: cascade
+              onDelete: set null
   #Attachments table------------------------
   - changeSet:
         id: 7

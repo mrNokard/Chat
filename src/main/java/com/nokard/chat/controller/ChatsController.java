@@ -1,6 +1,8 @@
 package com.nokard.chat.controller;
 
 import com.nokard.chat.dto.chat.ChatResponse;
+import com.nokard.chat.dto.chat.CreateChatRequest;
+import com.nokard.chat.dto.chatmember.ChatMemberNodeResponse;
 import com.nokard.chat.dto.message.MessageResponse;
 import com.nokard.chat.service.ChatService;
 import com.nokard.chat.service.MessageService;
@@ -45,4 +47,19 @@ public class ChatsController {
 
         return messageService.getChatMessages(id, PageRequest.of(page, size));
     }
+
+    @GetMapping("/id{id:\\d+}/members")
+    public Page<ChatMemberNodeResponse> getChatMembers(
+            @PathVariable Long id,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Integer page
+    ){
+        if(size == null) size = 10;
+        if(page == null) page = 0;
+
+        return chatService.getChatMembers(id, PageRequest.of(page, size));
+    }
+    //TODO: Login system
+    @PostMapping
+    public ChatResponse createChat(@RequestBody CreateChatRequest request){ return chatService.createChat(request); }
 }

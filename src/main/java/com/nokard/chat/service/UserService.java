@@ -36,6 +36,8 @@ public class UserService {
         return new UserResponse(usersRepo.findById(id).orElseThrow(Exceptions.USER_NOT_FOUND));
     }
     public UserResponse create(CreateUserRequest request) {
+        if(request == null) throw Exceptions.REQUEST_CANNOT_BE_NULL.get();
+        if(request.getLogin() == null) throw Exceptions.LOGIN_CANNOT_BE_NULL.get();
         if(usersRepo.findByLogin(request.getLogin()).isPresent()) throw Exceptions.USER_ALREADY_EXISTS.get();
 
         User u = new User();
@@ -52,7 +54,9 @@ public class UserService {
     }
 
     public UserResponse updateUser(UpdateUserRequest request) {
+        if(request == null) throw Exceptions.REQUEST_CANNOT_BE_NULL.get();
         if(request.getId() == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
+        if(request.getLogin() == null) throw Exceptions.LOGIN_CANNOT_BE_NULL.get();
         //<1917>
         if (request.getLogin() != null && usersRepo.existsByLoginAndIdNot(request.getLogin(), request.getId()))
             throw Exceptions.USER_ALREADY_EXISTS.get();
