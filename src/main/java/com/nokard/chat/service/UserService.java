@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,6 +36,7 @@ public class UserService {
 
         return new UserResponse(usersRepo.findById(id).orElseThrow(Exceptions.USER_NOT_FOUND));
     }
+    @Transactional
     public UserResponse create(CreateUserRequest request) {
         if(request == null) throw Exceptions.REQUEST_CANNOT_BE_NULL.get();
         if(request.getLogin() == null) throw Exceptions.LOGIN_CANNOT_BE_NULL.get();
@@ -48,15 +50,17 @@ public class UserService {
 
     public DeleteUserResponse deleteById(Long id) {
         if(id == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
-        if(!usersRepo.existsById(id)) throw Exceptions.USER_NOT_FOUND.get();
+        String login = usersRepo.findById(id).orElseThrow(Exceptions.USER_NOT_FOUND).getLogin();
         usersRepo.deleteById(id);
-        return new DeleteUserResponse();
+        DeleteUserResponse r = new DeleteUserResponse();
+        r.setLogin(login);
+        return r;
     }
 
+    @Transactional
     public UserResponse updateUser(UpdateUserRequest request) {
         if(request == null) throw Exceptions.REQUEST_CANNOT_BE_NULL.get();
         if(request.getId() == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
-        if(request.getLogin() == null) throw Exceptions.LOGIN_CANNOT_BE_NULL.get();
         //<1917>
         if (request.getLogin() != null && usersRepo.existsByLoginAndIdNot(request.getLogin(), request.getId()))
             throw Exceptions.USER_ALREADY_EXISTS.get();

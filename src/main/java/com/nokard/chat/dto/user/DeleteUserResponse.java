@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DeleteUserResponse {
-    private boolean error = false;
+    private String login = null;
     private long timestamp = DateUtils.nowUnix();
 }

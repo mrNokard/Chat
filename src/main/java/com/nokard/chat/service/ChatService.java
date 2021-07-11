@@ -2,6 +2,8 @@ package com.nokard.chat.service;
 
 import com.nokard.chat.dto.chat.ChatResponse;
 import com.nokard.chat.dto.chat.CreateChatRequest;
+import com.nokard.chat.dto.chat.DeleteChatResponse;
+import com.nokard.chat.dto.chat.UpdateChatRequest;
 import com.nokard.chat.dto.chatmember.ChatMemberNodeResponse;
 import com.nokard.chat.entity.Chat;
 import com.nokard.chat.entity.ChatMember;
@@ -44,12 +46,14 @@ public class ChatService {
                 .map(ChatResponse::new)
                 .collect(Collectors.toSet());
     }
-
     public ChatResponse getChat(Long id) {
         if(id == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
         return new ChatResponse(
                 chatsRepo.findById(id).orElseThrow(Exceptions.CHAT_NOT_FOUND)
         );
+    }
+    public Page<ChatMemberNodeResponse> getChatMembers(Long id, Pageable of) {
+        return chatMembersRepo.findAllById_ChatId(id, of).map(ChatMemberNodeResponse::new);
     }
 
     @Transactional
@@ -73,8 +77,26 @@ public class ChatService {
 
         return new ChatResponse(result);
     }
+    @Transactional
+    public ChatResponse updateChat(UpdateChatRequest request){
+        if(request == null) throw Exceptions.REQUEST_CANNOT_BE_NULL.get();
+        if(request.getId() == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
 
-    public Page<ChatMemberNodeResponse> getChatMembers(Long id, Pageable of) {
-        return chatMembersRepo.findAllById_ChatId(id, of).map(ChatMemberNodeResponse::new);
+        Chat chat = chatsRepo.findById(request.getId()).orElseThrow(Exceptions.CHAT_NOT_FOUND);
+        if(request.getName() != null) chat.setName(request.getName());
+        if(request.getDescription() != null) chat.setDescription(request.getDescription());
+
+        chat = chatsRepo.save(chat);
+        return new ChatResponse(chat);
+    }
+    @Transactional
+    public DeleteChatResponse deleteChat(Long id) {
+        if(id == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
+        String name = chatsRepo.findById(id).orElseThrow(Exceptions.CHAT_NOT_FOUND).getName();
+
+        chatsRepo.deleteById(id);
+        DeleteChatResponse r = new DeleteChatResponse();
+        r.setName(name);
+        return r;
     }
 }
