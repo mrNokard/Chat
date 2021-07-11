@@ -12,13 +12,13 @@ public class ChatMemberResponse {
     private String login;
     private String bio;
     private Roles role;
-    private boolean enabledNotification;
+    private boolean notify;
 
     public ChatMemberResponse(ChatMember member){
         this.id = member.getUser().getId();
         this.login = member.getUser().getLogin();
         this.bio = member.getUser().getBio();
         this.role = member.getRole();
-        this.enabledNotification = member.isNotify();
+        this.notify = member.isNotify();
     }
 }

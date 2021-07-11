@@ -4,7 +4,9 @@ import com.nokard.chat.dto.chat.ChatResponse;
 import com.nokard.chat.dto.chat.CreateChatRequest;
 import com.nokard.chat.dto.chat.DeleteChatResponse;
 import com.nokard.chat.dto.chat.UpdateChatRequest;
+import com.nokard.chat.dto.chatmember.AddChatMemberRequest;
 import com.nokard.chat.dto.chatmember.ChatMemberNodeResponse;
+import com.nokard.chat.dto.chatmember.ChatMemberResponse;
 import com.nokard.chat.entity.Chat;
 import com.nokard.chat.entity.ChatMember;
 import com.nokard.chat.entity.User;
@@ -98,5 +100,23 @@ public class ChatService {
         DeleteChatResponse r = new DeleteChatResponse();
         r.setName(name);
         return r;
+    }
+
+    @Transactional
+    public ChatMemberResponse addMember(AddChatMemberRequest request){
+        if(request == null) throw Exceptions.REQUEST_CANNOT_BE_NULL.get();
+        if(request.getIdChat() == null) throw Exceptions.CHAT_ID_CANNOT_BE_NULL.get();
+        if(request.getIdMember() == null) throw Exceptions.MEMBER_ID_CANNOT_BE_NULL.get();
+        User u = usersRepo.findById(request.getIdMember()).orElseThrow(Exceptions.USER_NOT_FOUND);
+        Chat c = chatsRepo.findById(request.getIdChat()).orElseThrow(Exceptions.CHAT_NOT_FOUND);
+        if(chatMembersRepo.findById_ChatIdAndId_UserId(request.getIdChat(), request.getIdMember()).isPresent())
+            throw Exceptions.CHAT_MEMBER_ALREADY_EXISTS.get();
+
+        if(request.getRole() == null) request.setRole(Roles.USER);
+        if(request.getNotify() == null) request.setNotify(true);
+        ChatMember profile = new ChatMember(c, u);
+        profile.setRole(request.getRole());
+        profile.setNotify(request.getNotify());
+        return new ChatMemberResponse(chatMembersRepo.save(profile));
     }
 }

@@ -4,7 +4,9 @@ import com.nokard.chat.dto.chat.ChatResponse;
 import com.nokard.chat.dto.chat.CreateChatRequest;
 import com.nokard.chat.dto.chat.DeleteChatResponse;
 import com.nokard.chat.dto.chat.UpdateChatRequest;
+import com.nokard.chat.dto.chatmember.AddChatMemberRequest;
 import com.nokard.chat.dto.chatmember.ChatMemberNodeResponse;
+import com.nokard.chat.dto.chatmember.ChatMemberResponse;
 import com.nokard.chat.dto.message.MessageResponse;
 import com.nokard.chat.service.ChatService;
 import com.nokard.chat.service.MessageService;
@@ -50,17 +52,6 @@ public class ChatsController {
         return messageService.getChatMessages(id, PageRequest.of(page, size));
     }
 
-    @GetMapping("/id{id:\\d+}/members")
-    public Page<ChatMemberNodeResponse> getChatMembers(
-            @PathVariable Long id,
-            @RequestParam(required = false) Integer size,
-            @RequestParam(required = false) Integer page
-    ){
-        if(size == null) size = 10;
-        if(page == null) page = 0;
-
-        return chatService.getChatMembers(id, PageRequest.of(page, size));
-    }
 
     //TODO: Login system
     @PostMapping
@@ -73,5 +64,28 @@ public class ChatsController {
     @DeleteMapping("/id{id:\\d+}")
     public DeleteChatResponse deleteChat(@PathVariable Long id){
         return chatService.deleteChat(id);
+    }
+
+
+    @GetMapping("/id{id:\\d+}/members")
+    public Page<ChatMemberNodeResponse> getChatMembers(
+            @PathVariable Long id,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Integer page
+    ){
+        if(size == null) size = 10;
+        if(page == null) page = 0;
+
+        return chatService.getChatMembers(id, PageRequest.of(page, size));
+    }
+    @PostMapping("/id{idChat:\\d+}/members/id{idUser:\\d+}")
+    public ChatMemberResponse addMember(
+            @PathVariable Long idChat,
+            @PathVariable Long idUser,
+            @RequestBody AddChatMemberRequest request
+    ){
+        request.setIdMember(idUser);
+        request.setIdChat(idChat);
+        return chatService.addMember(request);
     }
 }
