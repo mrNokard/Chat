@@ -22,6 +22,9 @@ public class Attachment {
     )
     private String filename;
 
+    @Column(name = "mime_type")
+    private String type;
+
     @NonNull
     @JoinColumn(name = "id_message")
     @ManyToOne(fetch = FetchType.LAZY)

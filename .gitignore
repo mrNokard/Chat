@@ -3,6 +3,7 @@ liquibase.properties
 .gradle
 build/
 db/
+files/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/

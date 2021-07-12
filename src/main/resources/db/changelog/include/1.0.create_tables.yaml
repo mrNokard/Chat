@@ -142,5 +142,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: mime_type
+                  type: varchar(255)
+              - column:
                   name: id_message
                   type: bigint

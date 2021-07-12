@@ -32,7 +32,8 @@ public class Exceptions {
         MESSAGE("Message"),
         CHAT("Chat"),
         CHAT_MEMBER("ChatMember"),
-        USER("User");
+        USER("User"),
+        ATTACHMENT("Attachment");
         private String s;
     }
 

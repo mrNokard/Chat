@@ -51,7 +51,7 @@ public class MessageService {
         Message msg = new Message(profile);
         msg.setContent(request.getContent());
         msg = messagesRepo.save(msg);
-        attachmentService.boundAttachments(request.getAttachments(), msg.getId());
+        attachmentService.boundAttachments(request.getAttachments(), msg);
         return new MessageResponse(msg);
     }
 
