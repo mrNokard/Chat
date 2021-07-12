@@ -19,13 +19,17 @@ public class Exceptions {
         LOGIN("login"),
         NAME("name"),
         CHAT_ID("chatId"),
-        MEMBER_ID("memberId");
+        USER_ID("userId"),
+        MEMBER_ID("memberId"),
+        AUTHOR_ID("authorId"),
+        CONTENT("content");
         private String s;
     }
     @Getter
     @AllArgsConstructor
     public enum Objects{
         REQUEST("Request"),
+        MESSAGE("Message"),
         CHAT("Chat"),
         CHAT_MEMBER("ChatMember"),
         USER("User");

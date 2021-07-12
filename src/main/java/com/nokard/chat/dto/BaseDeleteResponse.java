@@ -10,7 +10,6 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @Setter
 @NoArgsConstructor
-@MappedSuperclass
 public class BaseDeleteResponse {
     protected Long timestamp = DateUtils.nowUnix();
 }

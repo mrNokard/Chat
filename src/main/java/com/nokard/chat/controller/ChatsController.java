@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/chats")
 public class ChatsController {
     private final ChatService chatService;
-    private final MessageService messageService;
 
     @GetMapping
     public Page<ChatResponse> getPagedList(
@@ -40,18 +39,6 @@ public class ChatsController {
 
     @GetMapping("/id{id:\\d+}")
     public ChatResponse getChat(@PathVariable Long id){ return chatService.getChat(id); }
-
-    @GetMapping("/id{id:\\d+}/messages")
-    public Page<MessageResponse> getChatMessages(
-            @PathVariable Long id,
-            @RequestParam(required = false) Integer size,
-            @RequestParam(required = false) Integer page
-    ){
-        if(size == null) size = 10;
-        if(page == null) page = 0;
-
-        return messageService.getChatMessages(id, PageRequest.of(page, size));
-    }
 
 
     //TODO: Login system

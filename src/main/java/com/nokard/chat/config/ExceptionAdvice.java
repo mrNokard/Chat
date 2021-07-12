@@ -5,6 +5,7 @@ import com.nokard.chat.exception.BadRequestException;
 import com.nokard.chat.exception.DuplicateParameterException;
 import com.nokard.chat.exception.NotFoundException;
 import com.nokard.chat.exception.ParameterNullException;
+import liquibase.pro.packaged.S;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.core.config.Order;
 import org.apache.tomcat.util.ExceptionUtils;
@@ -57,6 +58,7 @@ public class ExceptionAdvice {
         if (ex instanceof BadRequestException) return HttpStatus.BAD_REQUEST;
         if (ex instanceof DuplicateParameterException) return HttpStatus.BAD_REQUEST;
         if (ex instanceof ParameterNullException) return HttpStatus.BAD_REQUEST;
+        if (ex instanceof SecurityException) return HttpStatus.FORBIDDEN;
         if (ex instanceof TransactionSystemException) return HttpStatus.BAD_REQUEST;
 
         return HttpStatus.INTERNAL_SERVER_ERROR;

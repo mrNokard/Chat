@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class MessageResponse {
     private Long id;
+    private Long authorId;
     private String content;
     private Set<Long> attachmentIds;
     private Long sent;
@@ -22,8 +23,9 @@ public class MessageResponse {
 
     public MessageResponse(Message msg){
         this.id = msg.getId();
+        this.authorId = (msg.getAuthor() == null)? null: msg.getAuthor().getId();
         this.content = msg.getContent();
-        this.attachmentIds = msg.getAttachments().stream().map(Attachment::getId).collect(Collectors.toSet());
+        this.attachmentIds = (msg.getAttachments() == null)? null :msg.getAttachments().stream().map(Attachment::getId).collect(Collectors.toSet());
         this.sent = DateUtils.toUnix(msg.getSent());
         this.edited = DateUtils.toUnix(msg.getEdited());
     }
