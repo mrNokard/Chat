@@ -1,6 +1,5 @@
 package com.nokard.chat.service;
 
-import com.nokard.chat.dto.chat.ChatResponse;
 import com.nokard.chat.dto.user.CreateUserRequest;
 import com.nokard.chat.dto.user.DeleteUserResponse;
 import com.nokard.chat.dto.user.UpdateUserRequest;
@@ -14,9 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,15 +28,15 @@ public class UserService {
 
 
     public UserResponse getUser(Long id) {
-        if(id == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
+        if(id == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.ID).get();
 
-        return new UserResponse(usersRepo.findById(id).orElseThrow(Exceptions.USER_NOT_FOUND));
+        return new UserResponse(usersRepo.findById(id).orElseThrow(Exceptions.NotFound(Exceptions.Objects.USER)));
     }
     @Transactional
     public UserResponse create(CreateUserRequest request) {
-        if(request == null) throw Exceptions.REQUEST_CANNOT_BE_NULL.get();
-        if(request.getLogin() == null) throw Exceptions.LOGIN_CANNOT_BE_NULL.get();
-        if(usersRepo.findByLogin(request.getLogin()).isPresent()) throw Exceptions.USER_ALREADY_EXISTS.get();
+        if(request == null) throw Exceptions.CannotBeNull(Exceptions.Objects.REQUEST).get();
+        if(request.getLogin() == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.LOGIN).get();
+        if(usersRepo.findByLogin(request.getLogin()).isPresent()) throw Exceptions.CannotBeNull(Exceptions.Objects.USER).get();
 
         User u = new User();
         u.setLogin(request.getLogin());
@@ -49,8 +45,8 @@ public class UserService {
     }
 
     public DeleteUserResponse deleteById(Long id) {
-        if(id == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
-        String login = usersRepo.findById(id).orElseThrow(Exceptions.USER_NOT_FOUND).getLogin();
+        if(id == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.ID).get();
+        String login = usersRepo.findById(id).orElseThrow(Exceptions.NotFound(Exceptions.Objects.USER)).getLogin();
         usersRepo.deleteById(id);
         DeleteUserResponse r = new DeleteUserResponse();
         r.setLogin(login);
@@ -59,13 +55,13 @@ public class UserService {
 
     @Transactional
     public UserResponse updateUser(UpdateUserRequest request) {
-        if(request == null) throw Exceptions.REQUEST_CANNOT_BE_NULL.get();
-        if(request.getId() == null) throw Exceptions.ID_CANNOT_BE_NULL.get();
+        if(request == null) throw Exceptions.CannotBeNull(Exceptions.Objects.REQUEST).get();
+        if(request.getId() == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.ID).get();
         //<1917>
         if (request.getLogin() != null && usersRepo.existsByLoginAndIdNot(request.getLogin(), request.getId()))
-            throw Exceptions.USER_ALREADY_EXISTS.get();
+            throw Exceptions.CannotBeNull(Exceptions.Objects.USER).get();
         //</1917>
-        User user = usersRepo.findById(request.getId()).orElseThrow(Exceptions.USER_NOT_FOUND);
+        User user = usersRepo.findById(request.getId()).orElseThrow(Exceptions.NotFound(Exceptions.Objects.USER));
 
         if(request.getLogin() != null) user.setLogin(request.getLogin());
         if(request.getBio() != null) user.setBio(request.getBio());

@@ -3,20 +3,47 @@ package com.nokard.chat.utils;
 import com.nokard.chat.exception.DuplicateParameterException;
 import com.nokard.chat.exception.NotFoundException;
 import com.nokard.chat.exception.ParameterNullException;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.UtilityClass;
 
 import java.util.function.Supplier;
 
+@UtilityClass
 public class Exceptions {
-    public static final Supplier<NullPointerException> ID_CANNOT_BE_NULL = () -> new ParameterNullException("id");
-    public static final Supplier<NullPointerException> NAME_CANNOT_BE_NULL = () -> new ParameterNullException("name");
-    public static final Supplier<NullPointerException> LOGIN_CANNOT_BE_NULL = () -> new ParameterNullException("login");
-    public static final Supplier<NullPointerException> REQUEST_CANNOT_BE_NULL = () -> new NullPointerException("Request cannot be null");
-    public static final Supplier<NotFoundException> USER_NOT_FOUND = () -> new NotFoundException("User not found");
-    public static final Supplier<NotFoundException> CHAT_NOT_FOUND = () -> new NotFoundException("Chat not found");
-    public static final Supplier<DuplicateParameterException> USER_ALREADY_EXISTS = () -> new DuplicateParameterException("User already exists");
-    public static final Supplier<DuplicateParameterException> CHAT_MEMBER_ALREADY_EXISTS = () -> new DuplicateParameterException("ChatMember already exists");
+    @Getter
+    @AllArgsConstructor
+    public enum Parameters{
+        ID("id"),
+        LOGIN("login"),
+        NAME("name"),
+        CHAT_ID("chatId"),
+        MEMBER_ID("memberId");
+        private String s;
+    }
+    @Getter
+    @AllArgsConstructor
+    public enum Objects{
+        REQUEST("Request"),
+        CHAT("Chat"),
+        CHAT_MEMBER("ChatMember"),
+        USER("User");
+        private String s;
+    }
+
+    public static Supplier<NullPointerException> ParameterCannotBeNull(Parameters s){return Exceptions.ParameterCannotBeNull(s.getS());}
+    public static Supplier<NullPointerException> ParameterCannotBeNull(String s){ return () -> new ParameterNullException(s);  }
 
 
-    public static final Supplier<NullPointerException> MEMBER_ID_CANNOT_BE_NULL = () -> new ParameterNullException("idMember");
-    public static final Supplier<NullPointerException> CHAT_ID_CANNOT_BE_NULL = () -> new ParameterNullException("idChat");
+    public static Supplier<NullPointerException> CannotBeNull(Objects s){ return Exceptions.CannotBeNull(s.getS());  }
+    public static Supplier<NullPointerException> CannotBeNull(String s){ return () -> new NullPointerException(s+" cannot be null.");  }
+
+
+    public static Supplier<NotFoundException> NotFound(Objects s){ return Exceptions.NotFound(s.getS());  }
+    public static Supplier<NotFoundException> NotFound(String s){ return () -> new NotFoundException(s+" not found");  }
+
+
+    public static Supplier<DuplicateParameterException> AlreadyExists(Objects s){ return Exceptions.AlreadyExists(s.getS());  }
+    public static Supplier<DuplicateParameterException> AlreadyExists(String s){ return () -> new DuplicateParameterException(s+" already exists");  }
 }
