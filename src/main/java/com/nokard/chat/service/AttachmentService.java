@@ -57,6 +57,7 @@ public class AttachmentService {
     }
 
     public void boundAttachments(Set<Long> attachmentIds, Message msg){
+        if(attachmentIds == null || attachmentIds.isEmpty()) return;
         //TODO: boundAttachment
         Iterable<Attachment> arr = attachmentsRepo.findAllById(attachmentIds);
         for(Attachment i:arr){
