@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddChatMemberRequest {
+public class ChatMemberRequest {
     private Long idMember;
     private Long idChat;
     private Roles role;

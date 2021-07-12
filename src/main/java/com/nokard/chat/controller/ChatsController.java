@@ -4,7 +4,8 @@ import com.nokard.chat.dto.chat.ChatResponse;
 import com.nokard.chat.dto.chat.CreateChatRequest;
 import com.nokard.chat.dto.chat.DeleteChatResponse;
 import com.nokard.chat.dto.chat.UpdateChatRequest;
-import com.nokard.chat.dto.chatmember.AddChatMemberRequest;
+import com.nokard.chat.dto.chatmember.ChatMemberDeleteResponse;
+import com.nokard.chat.dto.chatmember.ChatMemberRequest;
 import com.nokard.chat.dto.chatmember.ChatMemberNodeResponse;
 import com.nokard.chat.dto.chatmember.ChatMemberResponse;
 import com.nokard.chat.dto.message.MessageResponse;
@@ -65,7 +66,7 @@ public class ChatsController {
     public DeleteChatResponse deleteChat(@PathVariable Long id){
         return chatService.deleteChat(id);
     }
-
+    //END CRUD for chats ---------------------------------------------------------------------------------
 
     @GetMapping("/id{id:\\d+}/members")
     public Page<ChatMemberNodeResponse> getChatMembers(
@@ -78,14 +79,39 @@ public class ChatsController {
 
         return chatService.getChatMembers(id, PageRequest.of(page, size));
     }
+    @GetMapping("/id{idChat:\\d+}/members/id{idUser:\\d+}")
+    public ChatMemberResponse getMember(
+            @PathVariable Long idChat,
+            @PathVariable Long idUser
+    ){
+        return chatService.getChatMember(idChat, idUser);
+    }
     @PostMapping("/id{idChat:\\d+}/members/id{idUser:\\d+}")
     public ChatMemberResponse addMember(
             @PathVariable Long idChat,
             @PathVariable Long idUser,
-            @RequestBody AddChatMemberRequest request
+            @RequestBody ChatMemberRequest request
     ){
         request.setIdMember(idUser);
         request.setIdChat(idChat);
         return chatService.addMember(request);
     }
+    @PutMapping("/id{idChat:\\d+}/members/id{idUser:\\d+}")
+    public ChatMemberResponse setupMember(
+            @PathVariable Long idChat,
+            @PathVariable Long idUser,
+            @RequestBody ChatMemberRequest request
+    ){
+        request.setIdMember(idUser);
+        request.setIdChat(idChat);
+        return chatService.updateMember(request);
+    }
+    @DeleteMapping("/id{idChat:\\d+}/members/id{idUser:\\d+}")
+    public ChatMemberDeleteResponse kickMember(
+            @PathVariable Long idChat,
+            @PathVariable Long idUser
+    ){
+        return chatService.deleteMember(idChat, idUser);
+    }
+    //END CRUD for chats members -------------------------------------------------------------------------
 }

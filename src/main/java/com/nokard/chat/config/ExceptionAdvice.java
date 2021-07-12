@@ -3,7 +3,8 @@ package com.nokard.chat.config;
 import com.nokard.chat.dto.exception.ExceptionResponse;
 import com.nokard.chat.exception.BadRequestException;
 import com.nokard.chat.exception.DuplicateParameterException;
-import javassist.NotFoundException;
+import com.nokard.chat.exception.NotFoundException;
+import com.nokard.chat.exception.ParameterNullException;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.core.config.Order;
 import org.apache.tomcat.util.ExceptionUtils;
@@ -55,6 +56,7 @@ public class ExceptionAdvice {
         if (ex instanceof NotFoundException) return HttpStatus.NOT_FOUND;
         if (ex instanceof BadRequestException) return HttpStatus.BAD_REQUEST;
         if (ex instanceof DuplicateParameterException) return HttpStatus.BAD_REQUEST;
+        if (ex instanceof ParameterNullException) return HttpStatus.BAD_REQUEST;
         if (ex instanceof TransactionSystemException) return HttpStatus.BAD_REQUEST;
 
         return HttpStatus.INTERNAL_SERVER_ERROR;

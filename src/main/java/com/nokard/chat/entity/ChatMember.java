@@ -46,15 +46,3 @@ public class ChatMember {
     }
 }
 
-@Getter
-@Setter
-@Embeddable
-@NoArgsConstructor
-@AllArgsConstructor
-class ChatMemberKey implements Serializable {
-    @Column(name = "id_chat")
-    private Long chatId = 0L;
-
-    @Column(name = "id_user")
-    private Long userId = 0L;
-}

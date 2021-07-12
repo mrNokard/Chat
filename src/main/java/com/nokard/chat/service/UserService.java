@@ -59,7 +59,7 @@ public class UserService {
         if(request.getId() == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.ID).get();
         //<1917>
         if (request.getLogin() != null && usersRepo.existsByLoginAndIdNot(request.getLogin(), request.getId()))
-            throw Exceptions.CannotBeNull(Exceptions.Objects.USER).get();
+            throw Exceptions.AlreadyExists(Exceptions.Objects.USER).get();
         //</1917>
         User user = usersRepo.findById(request.getId()).orElseThrow(Exceptions.NotFound(Exceptions.Objects.USER));
 

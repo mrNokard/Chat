@@ -4,12 +4,13 @@ import com.nokard.chat.dto.chat.ChatResponse;
 import com.nokard.chat.dto.chat.CreateChatRequest;
 import com.nokard.chat.dto.chat.DeleteChatResponse;
 import com.nokard.chat.dto.chat.UpdateChatRequest;
-import com.nokard.chat.dto.chatmember.AddChatMemberRequest;
+import com.nokard.chat.dto.chatmember.ChatMemberDeleteResponse;
+import com.nokard.chat.dto.chatmember.ChatMemberRequest;
 import com.nokard.chat.dto.chatmember.ChatMemberNodeResponse;
 import com.nokard.chat.dto.chatmember.ChatMemberResponse;
-import com.nokard.chat.dto.chatmember.UpdateChatMemberRequest;
 import com.nokard.chat.entity.Chat;
 import com.nokard.chat.entity.ChatMember;
+import com.nokard.chat.entity.ChatMemberKey;
 import com.nokard.chat.entity.User;
 import com.nokard.chat.enums.Roles;
 import com.nokard.chat.repository.ChatMembersRepo;
@@ -54,9 +55,6 @@ public class ChatService {
         return new ChatResponse(
                 chatsRepo.findById(id).orElseThrow(Exceptions.NotFound(Exceptions.Objects.CHAT))
         );
-    }
-    public Page<ChatMemberNodeResponse> getChatMembers(Long id, Pageable of) {
-        return chatMembersRepo.findAllById_ChatId(id, of).map(ChatMemberNodeResponse::new);
     }
 
     @Transactional
@@ -103,39 +101,56 @@ public class ChatService {
         return r;
     }
 
+    public Page<ChatMemberNodeResponse> getChatMembers(Long id, Pageable of) {
+        return chatMembersRepo.findAllById_ChatId(id, of).map(ChatMemberNodeResponse::new);
+    }
+    public ChatMemberResponse getChatMember(Long idChat, Long idMember) {
+        if(idChat == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.CHAT_ID).get();
+        if(idMember == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.MEMBER_ID).get();
+        return new ChatMemberResponse(chatMembersRepo
+                .findById_ChatIdAndId_UserId(idChat, idMember)
+                .orElseThrow(Exceptions.NotFound(Exceptions.Objects.CHAT_MEMBER))
+        );
+    }
     @Transactional
-    public ChatMemberResponse addMember(AddChatMemberRequest request){
-        if(request == null) throw Exceptions.CannotBeNull(Exceptions.Objects.REQUEST).get();
-        if(request.getIdChat() == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.CHAT_ID).get();
-        if(request.getIdMember() == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.MEMBER_ID).get();
-        User u = usersRepo.findById(request.getIdMember()).orElseThrow(Exceptions.NotFound(Exceptions.Objects.USER));
-        Chat c = chatsRepo.findById(request.getIdChat()).orElseThrow(Exceptions.NotFound(Exceptions.Objects.CHAT));
+    public ChatMemberResponse addMember(ChatMemberRequest request){
+        ChatMember profile = CheckRequest(request);
         if(chatMembersRepo.findById_ChatIdAndId_UserId(request.getIdChat(), request.getIdMember()).isPresent())
             throw Exceptions.AlreadyExists(Exceptions.Objects.CHAT_MEMBER).get();
 
         if(request.getRole() == null) request.setRole(Roles.USER);
         if(request.getNotify() == null) request.setNotify(true);
-        ChatMember profile = new ChatMember(c, u);
         profile.setRole(request.getRole());
         profile.setNotify(request.getNotify());
         return new ChatMemberResponse(chatMembersRepo.save(profile));
     }
+    @Transactional
+    public ChatMemberResponse updateMember(ChatMemberRequest request){
+        CheckRequest(request);
+        ChatMember profile = chatMembersRepo.findById_ChatIdAndId_UserId(request.getIdChat(), request.getIdMember())
+                .orElseThrow(Exceptions.NotFound(Exceptions.Objects.CHAT_MEMBER));
 
-//    @Transactional
-//    public ChatMemberResponse updateMember(UpdateChatMemberRequest request){
-//        if(request == null) throw Exceptions.CannotBeNull(Exceptions.Objects.REQUEST).get();
-//        if(request.getIdChat() == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.CHAT_ID).get();
-//        if(request.getIdMember() == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.MEMBER_ID).get();
-//        User u = usersRepo.findById(request.getIdMember()).orElseThrow(Exceptions.NotFound(Exceptions.Objects.USER));
-//        Chat c = chatsRepo.findById(request.getIdChat()).orElseThrow(Exceptions.NotFound(Exceptions.Objects.CHAT));
-//        if(!chatMembersRepo.findById_ChatIdAndId_UserId(request.getIdChat(), request.getIdMember()).isPresent())
-//            throw Exceptions.AlreadyExists(Exceptions.Objects.CHAT_MEMBER).get();
-//
-//        if(request.getRole() == null) request.setRole(Roles.USER);
-//        if(request.getNotify() == null) request.setNotify(true);
-//        ChatMember profile = new ChatMember(c, u);
-//        profile.setRole(request.getRole());
-//        profile.setNotify(request.getNotify());
-//        return new ChatMemberResponse(chatMembersRepo.save(profile));
-//    }
+        if(request.getRole() != null) profile.setRole(request.getRole());
+        if(request.getNotify() != null) profile.setNotify(request.getNotify());
+
+        return new ChatMemberResponse(chatMembersRepo.save(profile));
+    }
+    @Transactional
+    public ChatMemberDeleteResponse deleteMember(Long idChat, Long idMember){
+        if(idChat == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.CHAT_ID).get();
+        if(idMember == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.MEMBER_ID).get();
+        if(!chatMembersRepo.existsById_ChatIdAndId_UserId(idChat, idMember))
+            throw Exceptions.NotFound(Exceptions.Objects.CHAT_MEMBER).get();
+        chatMembersRepo.deleteById_ChatIdAndId_UserId(idChat, idMember);
+        return new ChatMemberDeleteResponse(idChat, idMember);
+    }
+
+    private ChatMember CheckRequest(ChatMemberRequest request){
+        if(request == null) throw Exceptions.CannotBeNull(Exceptions.Objects.REQUEST).get();
+        if(request.getIdChat() == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.CHAT_ID).get();
+        if(request.getIdMember() == null) throw Exceptions.ParameterCannotBeNull(Exceptions.Parameters.MEMBER_ID).get();
+        User u = usersRepo.findById(request.getIdMember()).orElseThrow(Exceptions.NotFound(Exceptions.Objects.USER));
+        Chat c = chatsRepo.findById(request.getIdChat()).orElseThrow(Exceptions.NotFound(Exceptions.Objects.CHAT));
+        return new ChatMember(c, u);
+    }
 }
